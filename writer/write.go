@@ -1,6 +1,7 @@
 package writer
 
 import (
+	"log"
 	"os"
 	"syscall"
 )
@@ -9,7 +10,7 @@ type CpWriter interface {
 	Write(content []byte, fileName string) error
 }
 
-type CpMMapWriterImpl struct {}
+type CpMMapWriterImpl struct{}
 
 func (c *CpMMapWriterImpl) Write(content []byte, fileName string) error {
 	if file, e := os.Create(fileName); e != nil {
@@ -25,6 +26,20 @@ func (c *CpMMapWriterImpl) Write(content []byte, fileName string) error {
 				return err
 			}
 		}
+	}
+	return nil
+}
+
+type CpIOUtilWriterImpl struct{}
+
+func (c *CpIOUtilWriterImpl) Write(content []byte, fileName string) error {
+	if file, e := os.Create(fileName); e != nil {
+		return e
+	} else {
+		if _, e := file.Write(content); e != nil {
+			log.Fatal(e)
+		}
+		file.Close()
 	}
 	return nil
 }
