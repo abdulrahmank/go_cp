@@ -1,4 +1,4 @@
-package go_cp
+package loader
 
 import (
 	"golang.org/x/exp/mmap"

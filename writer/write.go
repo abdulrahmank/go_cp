@@ -1,4 +1,4 @@
-package go_cp
+package writer
 
 import (
 	"os"
