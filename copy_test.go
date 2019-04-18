@@ -17,7 +17,7 @@ func TestCopyFile(t *testing.T) {
 	content := []byte("sample content")
 
 	mockloaderImpl.EXPECT().Load(file).Return(content, nil)
-	mockWriterImpl.EXPECT().Write(content, "/Users/kabdul/go/src/github.com/abdulrahmank/go_cp/test_resource/sample.txt")
+	mockWriterImpl.EXPECT().Write(content, "./test_resource/sample.txt")
 
 	loaderImpl = mockloaderImpl
 	writerImpl = mockWriterImpl
@@ -31,12 +31,12 @@ func TestCopyDirWithOnlyFiles(t *testing.T) {
 
 	mockloaderImpl := mock.NewMockLoader(ctrl)
 	mockWriterImpl := mock.NewMockCpWriter(ctrl)
-	file := "./test_resource/"
+	file := "./test_resource"
 	dfile := "./test_resource"
 	content := []byte("sample content")
 
-	mockloaderImpl.EXPECT().Load("test_resource/sample.txt").Return(content, nil)
-	mockWriterImpl.EXPECT().Write(content, "/Users/kabdul/go/src/github.com/abdulrahmank/go_cp/test_resource/sample.txt")
+	mockloaderImpl.EXPECT().Load("./test_resource/sample.txt").Return(content, nil)
+	mockWriterImpl.EXPECT().Write(content, "./test_resource/sample.txt")
 
 	loaderImpl = mockloaderImpl
 	writerImpl = mockWriterImpl

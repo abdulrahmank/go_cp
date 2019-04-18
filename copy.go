@@ -4,9 +4,10 @@ import (
 	"github.com/abdulrahmank/go_cp/loader"
 	"github.com/abdulrahmank/go_cp/writer"
 	"github.com/spf13/cobra"
+	"io/ioutil"
 	"log"
 	"os"
-	"path/filepath"
+	"sync"
 )
 
 var CmdCp = &cobra.Command{
@@ -35,20 +36,24 @@ func copy(args []string) {
 	srcPath := args[0]
 	destPath := args[1]
 	file, _ := os.Stat(srcPath)
-	destDir, _ := filepath.Abs(destPath)
+	var wg sync.WaitGroup
 	if !file.IsDir() {
-		copyFile(srcPath, destDir+"/"+file.Name())
+		wg.Add(1)
+		go copyFile(srcPath, destPath+"/"+file.Name(), &wg)
 	} else {
-		filepath.Walk(srcPath, func(path string, info os.FileInfo, err error) error {
+		infos, _ := ioutil.ReadDir(srcPath)
+		for _, info := range infos {
 			if !info.IsDir() {
-				copyFile(path, destDir+"/"+info.Name())
+				wg.Add(1)
+				go copyFile(srcPath+"/"+info.Name(), destPath+"/"+info.Name(), &wg)
 			}
-			return nil
-		})
+		}
 	}
+	wg.Wait()
 }
 
-func copyFile(srcPath string, destPath string) {
+func copyFile(srcPath string, destPath string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	if bytes, e := loaderImpl.Load(srcPath); e != nil {
 		log.Fatal(e)
 	} else {
