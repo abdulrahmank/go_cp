@@ -4,7 +4,13 @@ import (
 	"golang.org/x/exp/mmap"
 )
 
-func Load(fileName string) ([]byte, error) {
+type Loader interface {
+	Load(fileName string) ([]byte, error)
+}
+
+type MMapLoaderImpl struct{}
+
+func (l *MMapLoaderImpl) Load(fileName string) ([]byte, error) {
 	if readerAt, e := mmap.Open(fileName); e != nil {
 		return nil, e
 	} else {
