@@ -5,7 +5,13 @@ import (
 	"syscall"
 )
 
-func Write(content []byte, fileName string) error {
+type CpWriter interface {
+	Write(content []byte, fileName string) error
+}
+
+type CpMMapWriterImpl struct {}
+
+func (c *CpMMapWriterImpl) Write(content []byte, fileName string) error {
 	if file, e := os.Create(fileName); e != nil {
 		return e
 	} else {

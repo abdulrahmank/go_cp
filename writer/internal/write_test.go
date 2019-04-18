@@ -11,7 +11,8 @@ func TestWrite(t *testing.T) {
 	t.Run("Should be able to write the given byte Array to disk", func(t *testing.T) {
 		file := "../test_resource/write_sample.txt"
 		content := "Writing sample content in file using munmap"
-		if e := writer.Write([]byte(content), file);
+		writerImpl := writer.CpMMapWriterImpl{}
+		if e := writerImpl.Write([]byte(content), file);
 			e != nil {
 			t.Errorf("Error occurred %v\n", e)
 		} else {
