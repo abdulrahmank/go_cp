@@ -57,9 +57,11 @@ func copyFile(srcPath string, destPath string, wg *sync.WaitGroup) {
 	if bytes, e := loaderImpl.Load(srcPath); e != nil {
 		log.Fatal(e)
 	} else {
-		e = writerImpl.Write(bytes, destPath)
+		n, e := writerImpl.Write(bytes, destPath)
 		if e != nil {
 			log.Fatal(e)
+		} else {
+			log.Printf("Number of bytes copied: %d", n)
 		}
 	}
 }

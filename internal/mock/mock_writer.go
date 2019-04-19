@@ -33,10 +33,11 @@ func (m *MockCpWriter) EXPECT() *MockCpWriterMockRecorder {
 }
 
 // Write mocks base method
-func (m *MockCpWriter) Write(content []byte, fileName string) error {
+func (m *MockCpWriter) Write(content []byte, fileName string) (int, error) {
 	ret := m.ctrl.Call(m, "Write", content, fileName)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // Write indicates an expected call of Write
