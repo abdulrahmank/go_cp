@@ -2,7 +2,12 @@ package main
 
 import (
 	"github.com/abdulrahmank/go_cp/internal/mock"
+	"github.com/abdulrahmank/go_cp/loader"
+	"github.com/abdulrahmank/go_cp/writer"
 	"github.com/golang/mock/gomock"
+	"log"
+	"os"
+	"os/exec"
 	"testing"
 )
 
@@ -42,4 +47,38 @@ func TestCopyDirWithOnlyFiles(t *testing.T) {
 	writerImpl = mockWriterImpl
 
 	copy([]string{file, dfile})
+}
+
+func BenchmarkGoCp(b *testing.B) {
+	os.Mkdir("./dest_cp", os.ModePerm)
+	os.Mkdir("./dest_gocp", os.ModePerm)
+	os.Mkdir("./benchmark_resources", os.ModePerm)
+	os.Mkdir("./benchmark_resources/dir", os.ModePerm)
+	command := exec.Command("mkfile", "-n", "4g", "./benchmark_resources/dir/file1.txt")
+	if _, e := command.Output(); e != nil {
+		b.Error(e)
+	}
+	command = exec.Command("mkfile", "-n", "4g", "./benchmark_resources/dir/file2.txt")
+	if _, e := command.Output(); e != nil {
+		b.Error(e)
+	}
+
+	b.Run("Copy using gocp", func(b *testing.B) {
+		loaderImpl = &loader.MMapLoaderImpl{}
+		writerImpl = &writer.CpMMapWriterImpl{}
+		copy([]string{"./benchmark_resources/dir", "./dest_gocp"})
+	})
+
+	b.Run("Copy using cp", func(b *testing.B) {
+		command := exec.Command("cp", "-r", "./benchmark_resources/dir/", "./dest_cp")
+		if bytes, e := command.Output(); e != nil {
+			b.Error(e)
+		} else {
+			log.Print(string(bytes))
+		}
+	})
+
+	os.RemoveAll("./dest_cp")
+	os.RemoveAll("./dest_gocp")
+	os.RemoveAll("./benchmark_resources")
 }
