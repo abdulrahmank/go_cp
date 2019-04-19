@@ -15,5 +15,5 @@ Note: source_dir, destination_dir should be given till last '/'
 
 | Command  |      Time taken for one operation      |  Size of files copied |
 |----------|:--------------------------------------:|----------------------:|
-|gocp|10.190916786 s|8GB|
-|cp|9.650145525 s|8GB|
+|gocp|35.755392714 s|8GB|
+|cp|11.453348709 s|8GB|
