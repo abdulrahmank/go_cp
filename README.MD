@@ -4,7 +4,14 @@
 
 It uses the concept of memory mapping and concurrency to achieve the speed of linux cp.
 
-Current benchmarking is as follows: (Refer copy_test.go for bench mark test)
+**Usage**
+```
+go_cp {source_dir|source_file} {destination_dir}
+
+Note: source_dir, destination_dir should be given till last '/'
+
+```
+**BenchMark** <sub>Refer: copy_test.go</sub>
 
 | Command  |      Time taken for one operation      |  Size of files copied |
 |----------|:--------------------------------------:|----------------------:|
