@@ -11,7 +11,7 @@ import (
 )
 
 var CmdCp = &cobra.Command{
-	Use:   "go_cp",
+	Use:   "gocp",
 	Short: "To copy files from source to destination",
 	Args:  cobra.MinimumNArgs(2),
 	Run:   CmdCpFn,

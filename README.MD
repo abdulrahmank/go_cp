@@ -6,7 +6,7 @@ It uses the concept of memory mapping and concurrency to achieve the speed of li
 
 **Usage**
 ```
-go_cp {source_dir|source_file} {destination_dir}
+gocp {source_dir|source_file} {destination_dir}
 
 Note: source_dir, destination_dir should be given till last '/'
 
@@ -15,5 +15,5 @@ Note: source_dir, destination_dir should be given till last '/'
 
 | Command  |      Time taken for one operation      |  Size of files copied |
 |----------|:--------------------------------------:|----------------------:|
-|go_cp|10.190916786 s|8GB|
+|gocp|10.190916786 s|8GB|
 |cp|9.650145525 s|8GB|
