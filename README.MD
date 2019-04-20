@@ -1,12 +1,16 @@
 **GoCP (Go copy)**
 
-**GoCP** is a command line tool to copy files from given source to destination.
+This is a WIP experimental repo to create a command line tool (_gocp_) faster than CP. Trying to achieve it using 
+memory mapped files and concurrency.
 
-It uses the concept of memory mapping and concurrency to achieve the speed of linux cp.
+It has various methods of copying files:
+1. using memory mapped files. (gocp command)
+2. using golang io.Copy. (cpio command)
 
 **Usage**
 ```
 gocp {source_dir|source_file} {destination_dir}
+cpio {source_dir|source_file} {destination_dir}
 
 Note: source_dir, destination_dir should be given till last '/'
 

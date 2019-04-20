@@ -18,6 +18,7 @@ func (c *CpMMapWriterImpl) Write(content []byte, fileName string) (int, error) {
 	} else {
 		file.Seek(int64(len(content)-1), 0)
 		file.Write([]byte(" "))
+		defer file.Close()
 		if mmap, err := syscall.Mmap(int(file.Fd()), 0, len(content), syscall.PROT_READ|syscall.PROT_WRITE, syscall.MAP_SHARED); err != nil {
 			return len(content), err
 		} else {

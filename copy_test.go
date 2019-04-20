@@ -5,7 +5,6 @@ import (
 	"github.com/abdulrahmank/go_cp/loader"
 	"github.com/abdulrahmank/go_cp/writer"
 	"github.com/golang/mock/gomock"
-	"log"
 	"os"
 	"os/exec"
 	"testing"
@@ -69,13 +68,8 @@ func BenchmarkGoCp(b *testing.B) {
 		copy([]string{"./benchmark_resources/dir", "./dest_gocp"})
 	})
 
-	b.Run("Copy using cp", func(b *testing.B) {
-		command := exec.Command("cp", "-r", "./benchmark_resources/dir/", "./dest_cp")
-		if bytes, e := command.Output(); e != nil {
-			b.Error(e)
-		} else {
-			log.Print(string(bytes))
-		}
+	b.Run("Copy using cpio", func(b *testing.B) {
+		copyIOCopy(nil, []string{"./benchmark_resources/dir", "./dest_cp"})
 	})
 
 	os.RemoveAll("./dest_cp")
