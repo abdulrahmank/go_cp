@@ -5,6 +5,7 @@ import (
 	"github.com/abdulrahmank/go_cp/loader"
 	"github.com/abdulrahmank/go_cp/writer"
 	"github.com/golang/mock/gomock"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"testing"
@@ -26,7 +27,7 @@ func TestCopyFile(t *testing.T) {
 	loaderImpl = mockloaderImpl
 	writerImpl = mockWriterImpl
 
-	copy([]string{file, dfile})
+	CmdCpFn(nil, []string{file, dfile})
 }
 
 func TestCopyDirWithOnlyFiles(t *testing.T) {
@@ -75,4 +76,30 @@ func BenchmarkGoCp(b *testing.B) {
 	os.RemoveAll("./dest_cp")
 	os.RemoveAll("./dest_gocp")
 	os.RemoveAll("./benchmark_resources")
+}
+
+func TestIntegration(t *testing.T) {
+	t.Run("should be able to copy a big file using gocp command", func(t *testing.T) {
+		loaderImpl = &loader.MMapLoaderImpl{}
+		writerImpl = &writer.CpMMapWriterImpl{}
+		CmdCpFn(nil, []string{"./test_resource/big.txt", "./"})
+		expected, _ := ioutil.ReadFile("./test_resource/big.txt")
+		actual, _ := ioutil.ReadFile("./big.txt")
+
+		if string(actual) != string(expected) {
+			t.Error("actual != expected")
+		}
+		os.Remove("./big.txt")
+	})
+
+	t.Run("should be able to copy a big file using cpio command", func(t *testing.T) {
+		copyIOCopy(nil, []string{"./test_resource/big.txt", "./"})
+		expected, _ := ioutil.ReadFile("./test_resource/big.txt")
+		actual, _ := ioutil.ReadFile("./big.txt")
+
+		if string(actual) != string(expected) {
+			t.Error("actual != expected")
+		}
+		os.Remove("./big.txt")
+	})
 }
